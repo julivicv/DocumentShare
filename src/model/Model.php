@@ -16,7 +16,5 @@ class Model
         $tbl = strtolower(get_class($this));
         $tbl .= 's';
         $this->table = $tbl;
-
-        // Conecta no banco
         $this->conex = new PDO("{$this->driver}:host={$this->host};port={$this->port};dbname={$this->dbname}", $this->user, $this->password);
     }
