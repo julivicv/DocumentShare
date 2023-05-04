@@ -18,3 +18,18 @@ class Model
         $this->table = $tbl;
         $this->conex = new PDO("{$this->driver}:host={$this->host};port={$this->port};dbname={$this->dbname}", $this->user, $this->password);
     }
+
+    public function create($data) {
+        $query = "INSERT INTO {$this->table} SET ";
+        $sql_fields = $this->map_fields($data);
+        $finalQuery = $query.implode(', ', $sql_fields);
+        $sql = $this->conex->prepare($finalQuery);
+    }
+
+    private function map_fields($data) {
+        foreach (array_keys($data) as $field) {
+            $sql_fields[] = "{$field} = :{$field}";
+        }
+        return $sql_fields;
+    }
+}
