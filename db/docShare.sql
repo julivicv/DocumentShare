@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `docShare`.`documents` ;
 DROP TABLE IF EXISTS `docShare`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `docShare`.`users` (
-                                            `id` INT NOT NULL,
+                                            `id` INT AUTO_INCREMENT NOT NULL,
                                             `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
