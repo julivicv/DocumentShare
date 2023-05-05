@@ -17,7 +17,7 @@ if ($isError[0]) {
     header("location: ./create_user_page.php?erro={$isError[0]}");
 }
 
-$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+$passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
 $newUser = new User();
 

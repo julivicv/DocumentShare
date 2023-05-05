@@ -8,4 +8,4 @@ $errorValue = (int) $_GET["erro"];
 
 $errorMsg = $error[$errorValue] ?? "";
 
-echo $view->render(['title' => 'Login', 'Erro' => $errorMsg]);
+echo $view->render(['title' => 'Cadastro De Usuario', 'Erro' => $errorMsg]);

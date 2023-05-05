@@ -20,10 +20,12 @@ class User extends Model
 
         if ($sql->rowCount()) {
             $user = $sql->fetch(PDO::FETCH_OBJ);
-            if (password_verify($pass, $user->pass)) {
+            if (password_verify($pass, $user->password)) {
                 session_start();
-                $_SESSION['user'] = $user->nome;
-                header("Location: ");
+                $_SESSION['auth'] = $user->name;
+                header("Location: home_page.php ");
+            } else {
+                header("Location: login_user_page.php ");
             }
 
 
