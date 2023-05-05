@@ -30,7 +30,7 @@ class Document extends Model {
                     ),
                     true
                 )) {
-                throw new RuntimeException('Invalid file format.');
+                return('Arquivo inválido');
             }
             if (!move_uploaded_file(
                 $_FILES['upfile']['tmp_name'],
