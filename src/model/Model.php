@@ -1,12 +1,10 @@
 <?php
 class Model
 {
-
-    // Não é a forma mais indicada de armazenar usuário e senha
     private $driver = 'mysql';
     private $host = 'localhost';
     private $dbname = 'docShare';
-    private $port = '7924';
+    private $port = '3306';
     private $user = 'root';
     private $password = null;
     protected $table;

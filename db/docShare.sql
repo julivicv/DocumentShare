@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `docShare`.`users` (
                                             `id` INT AUTO_INCREMENT NOT NULL,
                                             `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(75) NOT NULL,
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;
 
