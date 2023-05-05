@@ -1,16 +1,31 @@
-<?
+<?php
+session_start();
+require("../model/User.php");
+
+if (isset($_SESSION["auth"])) {
+    header("location: ./home_page.php");
+}
 
 $name = $_POST["name"];
 $email = $_POST["email"];
 $password = $_POST["password"];
 
-header("location: ./create_user_page.php");
 
 $isError = validar_dados($name, $email, $password);
 
 if ($isError[0]) {
-    // header("")
+    header("location: ./create_user_page.php?erro={$isError[0]}");
 }
+
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+$newUser = new User();
+
+$newUser->create([
+    "name" => $name,
+    "email" => $email,
+    "password" => $passwordHash
+]);
 
 
 function validar_dados($name, $email, $password)
@@ -19,23 +34,23 @@ function validar_dados($name, $email, $password)
 
     // Validar nome
     if (empty($name)) {
-        $erros[] = "Por favor, digite o seu nome.";
+        $erros[] = "1";
     } elseif (!preg_match("/^[a-zA-Z0-9 ]*$/", $name)) {
-        $erros[] = "O seu nome só pode conter letras, números e espaços.";
+        $erros[] = "2";
     }
 
     // Validar e-mail
     if (empty($email)) {
-        $erros[] = "Por favor, digite o seu e-mail.";
+        $erros[] = "3";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erros[] = "Por favor, digite um endereço de e-mail válido.";
+        $erros[] = "4";
     }
 
     // Validar senha
     if (empty($password)) {
-        $erros[] = "Por favor, digite a sua senha.";
+        $erros[] = "5";
     } elseif (strlen($password) < 8) {
-        $erros[] = "A sua senha deve ter pelo menos 8 caracteres.";
+        $erros[] = "6";
     }
 
     return $erros; // Retorna o array de erros (se houver)
