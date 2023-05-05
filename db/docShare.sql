@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `docShare`.`documents` ;
 DROP TABLE IF EXISTS `docShare`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `docShare`.`users` (
-                                            `id` INT NOT NULL,
+                                            `id` INT AUTO_INCREMENT NOT NULL,
                                             `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `docShare`.`users` (
 CREATE TABLE IF NOT EXISTS `docShare`.`documents` (
                                                 `id` INT NOT NULL,
                                                 `users_id` INT NOT NULL,
-                                                `file` BLOB NOT NULL,
+                                                `path` VARCHAR(20) NOT NULL,
   `description` VARCHAR(140) NOT NULL,
   PRIMARY KEY (`id`, `users_id`),
   FOREIGN KEY (`users_id`)
