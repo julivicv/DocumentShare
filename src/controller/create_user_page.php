@@ -4,8 +4,9 @@ require('../utils/erros.php');
 
 $view = $twig->load('create_user.html');
 
-$errorValue = (int)  isset($_GET["erro"]);
+$errorValue = (int) $_GET["erro"];
+
 
 $errorMsg = $error[$errorValue] ?? "";
 
-echo $view->render(['title' => 'Cadastro De Usuario', 'Erro' => $errorMsg]);
+echo $view->render(['title' => 'Cadastro De Usuario', 'Erro' => $error[$errorValue] ?? ""]);

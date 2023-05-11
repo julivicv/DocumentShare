@@ -1,7 +1,6 @@
 <?php
 session_start();
 require("../model/User.php");
-require("../model/Document.php");
 
 if (isset($_SESSION["auth"])) {
     header("location: ./home_page.php");
@@ -18,35 +17,45 @@ if ($isError[0]) {
     return header("location: ./create_user_page.php?erro={$isError[0]}");
 }
 
+$newUser = new User();
 
+$userExist = $newUser->getUserByEmail($email);
 
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
+if ($userExist) {
+    return header("location: ./create_user_page.php?erro=8");
+}
+
+$newUser->create([
+    "name" => $name,
+    "email" => $email,
+    "password" => $passwordHash
+]);
+
+return header("location: ./login_user_page.php?erro=8");
 
 
 function validar_dados($name, $email, $password)
 {
-    $erros = array(); // Array para armazenar erros de validação
-
-    // Validar nome
+    $erros = array();
     if (empty($name)) {
         $erros[] = "1";
     } elseif (!preg_match("/^[a-zA-Z0-9 ]*$/", $name)) {
+        $erros[] = "3";
+    }
+
+    if (empty($email)) {
+        $erros[] = "2";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erros[] = "2";
     }
 
-    // Validar e-mail
-    if (empty($email)) {
-        $erros[] = "3";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erros[] = "4";
-    }
-
-    // Validar senha
     if (empty($password)) {
-        $erros[] = "5";
+        $erros[] = "4";
     } elseif (strlen($password) < 8) {
-        $erros[] = "6";
+        $erros[] = "5";
     }
 
-    return $erros; // Retorna o array de erros (se houver)
+    return $erros;
 }
