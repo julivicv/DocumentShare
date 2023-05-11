@@ -2,7 +2,14 @@
 require("Model.php");
 class User extends Model
 {
+    public function getUserByEmail($email)
+    {
+        $sql = $this->conex->prepare("SELECT * FROM {$this->table} WHERE `email` = :email");
+        $sql->bindParam(':email', $email);
+        $sql->execute();
 
+        return $sql->fetch(PDO::FETCH_ASSOC);
+    }
     public function getUserById($id)
     {
         $sql = $this->conex->prepare("SELECT * FROM {$this->table} WHERE `id` = :id");
@@ -27,8 +34,6 @@ class User extends Model
             } else {
                 header("Location: login_user_page.php ");
             }
-
-
         }
     }
 }

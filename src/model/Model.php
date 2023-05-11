@@ -28,6 +28,8 @@ class Model
             $sql->bindParam(":$key", $data[$key]);
         }
         $sql->execute();
+        // get the index
+        return $this->conex->prepare("SELECT LAST_INSERT_ID()");
     }
 
     private function map_fields($data)

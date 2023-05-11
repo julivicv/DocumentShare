@@ -1,6 +1,7 @@
 <?php
 session_start();
 require("../model/User.php");
+require("../model/Document.php");
 
 if (isset($_SESSION["auth"])) {
     header("location: ./home_page.php");
@@ -14,18 +15,12 @@ $password = $_POST["password"];
 $isError = validar_dados($name, $email, $password);
 
 if ($isError[0]) {
-    header("location: ./create_user_page.php?erro={$isError[0]}");
+    return header("location: ./create_user_page.php?erro={$isError[0]}");
 }
 
-$passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-$newUser = new User();
 
-$newUser->create([
-    "name" => $name,
-    "email" => $email,
-    "password" => $passwordHash
-]);
+
 
 
 function validar_dados($name, $email, $password)

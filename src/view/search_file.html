@@ -1,0 +1,31 @@
+{% include "components/head.html" %}
+<h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
+<p class="text-gray-500 text-center">
+  <a href="./home_page.php" class="text-blue-500 hover:text-blue-600">Home</a> /
+  List Files
+</p>
+
+<form action="" class="p-4 w-[400px] m-auto">
+  <div class="flex">
+    <input
+      type="text"
+      class="flex-grow px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      placeholder="Search your file"
+    />
+    <button
+      class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+    >
+      Go
+    </button>
+  </div>
+  <ul class="list-disc pl-4 mt-20">
+    <li>
+      <p>not found any files</p>
+    </li>
+    <li>
+      <a href="" class="text-blue-500 hover:text-blue-600">File.php</a>
+    </li>
+  </ul>
+</form>
+
+{% include "components/foot.html" %}

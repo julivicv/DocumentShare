@@ -4,13 +4,11 @@ require('../utils/erros.php');
 
 $view = $twig->load('login_user.html');
 
-$errorValue = (int) $_GET["erro"];
+$errorValue = (int) isset($_GET["erro"]);
 $errorMsg = $error[$errorValue] ?? "";
 
 if (!isset($errorMsg)) {
     $errorMsg = "";
 }
-
-
 
 echo $view->render(['title' => 'Login', 'Erro' => $errorMsg]);

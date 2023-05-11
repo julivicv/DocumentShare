@@ -4,7 +4,7 @@ require('../utils/erros.php');
 
 $view = $twig->load('create_user.html');
 
-$errorValue = (int) $_GET["erro"];
+$errorValue = (int)  isset($_GET["erro"]);
 
 $errorMsg = $error[$errorValue] ?? "";
 

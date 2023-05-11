@@ -1,16 +1,35 @@
 {% include "components/head.html" %}
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
+<p><a href="/">home</a> / create user</p>
+</p>
 <p>{{Erro}}</p>
-<form class="flex gap-5 flex-col bg-sky-500 text-white w-1/2 m-auto min-m-[500px] p-5 roudend-sm" action="./create_user_controller.php" method="POST">
-	<label for="">Name</label>
-	<input name="name" class="p-3 text-black" type="text">
-	<label  for="">Email</label>
-	<input name="email"  class="p-3 text-black" type="email">
-	<label for="">Password</label>
-	<input name="password"   class="p-3 text-black" type="password">
-	<button class="bg-indigo-500 p-3 ">
-  		Save
-	</button>
+<form
+  class="flex gap-5 flex-col bg-sky-500 text-white w-1/2 m-auto min-m-[500px] p-5 roudend-sm"
+  action="./create_user_controller.php"
+  method="POST"
+>
+  <label for="">Name</label>
+  <input
+    name="name"
+    placeholder="John Doe"
+    class="p-3 text-black"
+    type="text"
+  />
+  <label for="">Email</label>
+  <input
+    placeholder="John@Doe.com"
+    name="email"
+    class="p-3 text-black"
+    type="email"
+  />
+  <label for="">Password</label>
+  <input
+    name="password"
+    placeholder="your password"
+    class="p-3 text-black"
+    type="password"
+  />
+  <button class="bg-indigo-500 p-3">Save</button>
 </form>
 
 {% include "components/foot.html" %}
