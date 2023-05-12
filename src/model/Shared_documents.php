@@ -9,15 +9,30 @@ class Shared_documents extends Model
         $sql->bindParam(':fid', $fid);
         $sql->execute();
 
-        if ($sql->rowCount() > 0) {
-            $userShare = $this->conex->prepare("SELECT `id` FROM `users` `u``u`.`email` = :email");
-            $userShare->bindParam(':email', $email);
-            $userId = $userShare->execute();
-            $sql = $this->conex->prepare("INSERT INTO {$this->table} (users_id, document_id) VALUES (:uid, :fid)");
-            $sql->bindParam(':uid', $userId['id']);
-            $sql->bindParam(':fid', $fid);
-            $sql->execute();
-            return ("Documento compartilhado com sucesso!");
+        if($sql->rowCount() > 0) {
+                $userShare = $this->conex->prepare("SELECT `id` FROM `users` `u``u`.`email` = :email");
+                $userShare->bindParam(':email', $email);
+                $userShare->execute();
+                $userId = $userShare->fetch(PDO::FETCH_ASSOC);
+                $sql = $this->conex->prepare("INSERT INTO {$this->table} (users_id, document_id) VALUES (:uid, :fid)");
+                $sql->bindParam(':uid', $userId['id']);
+                $sql->bindParam(':fid', $fid);
+                $sql->execute();
+                return ("Documento compartilhado com sucesso!");
         }
+    }
+
+    public function verifySharedDocument($uid, $fid) {
+        $sql = $this->conex->prepare("SELECT * FROM `documents` `d` LEFT JOIN `users` `u` on `u`.`id` = `d`.`users_id` LEFT JOIN `shared_documents` `sd` on `d`.`id` = `sd`.`document_id` WHERE `u`.`id` NOT NULL");
+        $sql->bindParam(':uid', $uid);
+        $sql->bindParam(':fid', $fid);
+        $sql->execute();
+        if($sql->rowCount() < 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+
     }
 }
