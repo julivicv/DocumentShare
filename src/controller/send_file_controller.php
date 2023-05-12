@@ -1,15 +1,17 @@
 <?php
 
 require("../model/User.php");
+
 require("../model/Document.php");
-require("../model/Shared_documents.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  echo memory_get_usage();
 
   $email = $_POST['email'];
 
   $targetDir = "../docs/";
   $allowedExtensions = ['pdf'];
+  echo memory_get_usage();
 
   if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
     $file = $_FILES['arquivo'];
@@ -17,11 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
     $randomData = date('YmdHis') . rand(1000, 9999);
     $targetPath = $targetDir . $randomData . $fileName;
-
     $document = new Document();
     $user = new User();
-
     $dataUser = $user->getUserByEmail($email);
+    if (!$dataUser) {
+      echo "Erro";
+      return;
+    }
 
     $document->create([
       "users_id" => $dataUser['id'],

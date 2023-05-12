@@ -29,7 +29,7 @@ class User extends Model
             $user = $sql->fetch(PDO::FETCH_OBJ);
             if (password_verify($pass, $user->password)) {
                 session_start();
-                $_SESSION['auth'] = $user->name;
+                $_SESSION['auth'] = $user->id;
                 header("Location: home_page.php ");
             } else {
                 header("Location: login_user_page.php ");

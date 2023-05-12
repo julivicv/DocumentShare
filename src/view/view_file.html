@@ -1,4 +1,11 @@
 {% include "components/head.html" %}
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
-
+<ul class="text-center">
+	{% for file in files %}
+		<li>
+			<a href={{file['path']}}>
+				{{file['description']}}</a>
+		</li>
+	{% endfor %}
+</ul>
 {% include "components/foot.html" %}
