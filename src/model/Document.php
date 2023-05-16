@@ -6,16 +6,16 @@ class Document extends Model
     public function searchDocuments($users_id, $search)
     {
         try {
-            $query = "SELECT d.id, d.users_id, d.path, d.name, p.can_view, p.can_edit, p.can_delete
+            $query = "SELECT d.id, d.users_id, d.path, d.name, p.can_view, p.can_edit, p.can_delete, d.created_at
             FROM documents AS d
             LEFT JOIN users AS u ON d.users_id = u.id
             JOIN document_permissions AS p ON p.documents_id = d.id
             WHERE (d.users_id = ? OR u.id = ?)
-            AND (d.name LIKE ? OR d.path LIKE ?)";
+            AND (d.name LIKE ? OR d.path LIKE ? OR d.created_at LIKE ?)";
 
             $statement = $this->conex->prepare($query);
             $searchTerm = '%' . $search . '%';
-            $statement->execute([$users_id, $users_id, $searchTerm, $searchTerm]);
+            $statement->execute([$users_id, $users_id, $searchTerm, $searchTerm, $searchTerm]);
 
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);

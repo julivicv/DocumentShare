@@ -24,29 +24,45 @@
     </button>
   </form>
 </div>
-
-<ul class="text-center flex flex-col items-center justify-center">
-  {% for file in files %}
-  <li class="flex gap-4 text-center items-center my-1 justify-center">
-    <a href="{{ file['path'] }}" class="text-blue-500 hover:underline">
-      {{ file['name'] }}
-    </a>
-    <!-- verify if user have permition for delete -->
-    {% if file['can_delete'] == 1 %}
-    <a
-      class="bg-red-400 text-white px-2 py-1 rounded"
-      href="./delete_file.php?id={{ file['id'] }}"
-      >Delete</a
-    >
-    {% endif %} {% if file['can_edit'] == 1 %}
-    <a
-      class="bg-green-400 text-white px-2 py-1 rounded"
-      href="./delete_file.php?id={{ file['id'] }}"
-      >Edit</a
-    >
-    {% endif %}
-  </li>
-  {% endfor %}
-</ul>
+<div class="flex justify-center">
+  <table class="text-center border w-full max-w-xl">
+    <thead class="border text-center">
+      <tr>
+        <th class="py-2">Date</th>
+        <th class="py-2">FIle</th>
+        <th class="py-2 px-4">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="border">
+      {% for file in files %}
+      <tr class="border">
+        <td class="py-2">{{ file['created_at'] }}</td>
+        <td class="py-2">
+          <a href="{{ file['path'] }}" class="text-blue-500 hover:underline">
+            {{ file['name'] }}
+          </a>
+        </td>
+        <td class="py-2">
+          {% if file['can_delete'] == 1 %}
+          <a
+            class="bg-red-400 text-white px-2 py-1 rounded"
+            href="./delete_file.php?id={{ file['id'] }}"
+          >
+            Delete
+          </a>
+          {% endif %} {% if file['can_edit'] == 1 %}
+          <a
+            class="bg-green-400 text-white px-2 py-1 rounded"
+            href="./delete_file.php?id={{ file['id'] }}"
+          >
+            Edit
+          </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% include "components/foot.html" %}
