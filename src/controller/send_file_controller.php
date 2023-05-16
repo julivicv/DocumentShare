@@ -6,6 +6,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
   $write = $_POST['write'] ? 1 : 0;
   $delete = $_POST['delete'] ? 1 : 0;
+  $user = new User();
+  $dataUser = $user->getUserByEmail($email);
+  if (!$dataUser) {
+    header("Location: ../controller/submit_file_page.php?error=10");
+    exit;
+  }
 
   $targetDir = "../docs/";
   $allowedExtensions = ['pdf'];
@@ -18,15 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $targetPath = $targetDir . $randomData . $fileName;
 
     $document = new Document();
-    $user = new User();
     $dataUser = $user->getUserByEmail($email);
-    if (!$dataUser) {
-      echo "Erro";
-      return;
-    }
 
-    // Definir as permissões desejadas para o documento
-    $permissions = [1, $write, $delete]; // Exemplo: todas as permissões ativadas
+
+    $permissions = [1, $write, $delete];
 
     $documentId = $document->createDocument($dataUser['id'], $targetPath, $fileName, $permissions);
 

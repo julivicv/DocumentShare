@@ -1,68 +1,118 @@
 {% include "components/head.html" %}
 
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
-<div class="text-center">
-  <a href="./home_page.php" class="text-blue-500 hover:text-blue-700 font-bold"
-    >Home</a
-  >
-  / List Files
-</div>
 
-<div class="flex items-center justify-center m-10">
-  <form action="./view_file_page.php" method="post">
-    <input
-      type="text"
-      name="search"
-      class="flex-grow px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-      placeholder="Search your file"
-    />
-    <button
-      type="submit"
-      class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+<div class="btm-nav">
+  <a href="./view_file_page.php" class="active">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      Go
-    </button>
-  </form>
-</div>
-<div class="flex justify-center">
-  <table class="text-center border w-full max-w-xl">
-    <thead class="border text-center">
-      <tr>
-        <th class="py-2">Date</th>
-        <th class="py-2">FIle</th>
-        <th class="py-2 px-4">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="border">
-      {% for file in files %}
-      <tr class="border">
-        <td class="py-2">{{ file['created_at'] }}</td>
-        <td class="py-2">
-          <a href="{{ file['path'] }}" class="text-blue-500 hover:underline">
-            {{ file['name'] }}
-          </a>
-        </td>
-        <td class="py-2">
-          {% if file['can_delete'] == 1 %}
-          <a
-            class="bg-red-400 text-white px-2 py-1 rounded"
-            href="./delete_file.php?id={{ file['id'] }}"
-          >
-            Delete
-          </a>
-          {% endif %} {% if file['can_edit'] == 1 %}
-          <a
-            class="bg-green-400 text-white px-2 py-1 rounded"
-            href="./delete_file.php?id={{ file['id'] }}"
-          >
-            Edit
-          </a>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+      />
+    </svg>
+    <span class="btm-nav-label">View your files</span>
+  </a>
+  <a href="./home_page.php">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span class="btm-nav-label">Home</span>
+  </a>
+  <a href="./submit_file_page.php">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span class="btm-nav-label">Submit Files</span>
+  </a>
 </div>
 
-{% include "components/foot.html" %}
+<form class="flex" action="./view_file_page.php" method="post">
+    <div class="form-control m-auto my-10">
+      <div class="input-group">
+
+      <input
+        type="text"
+        name="search"
+        class="input input-bordered"
+        placeholder="Search your file"
+      />
+      <button class="btn btn-square">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+      </button>
+    </div>
+    </div>
+    </form>
+
+  <div class="flex justify-center w-fit m-auto">
+    <table class="table table-zebra w-full">
+      <thead class="">
+        <tr>
+          <th class="py-2">Date</th>
+          <th class="py-2">FIle</th>
+          <th class="py-2 px-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="">
+        {% for file in files %}
+        <tr class="">
+          <td class="py-2">{{ file['created_at'] }}</td>
+          <td class="py-2">
+            <a href="{{ file['path'] }}" class="text-blue-500 hover:underline">
+              {{ file['name'] }}
+            </a>
+          </td>
+          <td class="py-2">
+            {% if file['can_delete'] == 1 %}
+            <a
+              class="bg-red-400 text-white px-2 py-1 rounded"
+              href="./delete_file.php?id={{ file['id'] }}"
+            >
+              Delete
+            </a>
+            {% endif %} {% if file['can_edit'] == 1 %}
+            <a
+              class="bg-green-400 text-white px-2 py-1 rounded"
+              href="./delete_file.php?id={{ file['id'] }}"
+            >
+              Edit
+            </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% include "components/foot.html" %}
+</div>

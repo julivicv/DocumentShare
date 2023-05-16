@@ -33,7 +33,7 @@ $newUser->create([
     "password" => $passwordHash
 ]);
 
-return header("location: ./login_user_page.php?erro=8");
+return header("location: ./login_user_page.php");
 
 
 function validar_dados($name, $email, $password)

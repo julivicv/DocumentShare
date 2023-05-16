@@ -1,10 +1,16 @@
 {% include "components/head.html" %}
+<div class="text-sm breadcrumbs m-10">
+  <ul>
+    <li><a href="./create_user_page.php">Cadastro</a></li>
+    <li><a>Login</a></li>
+  </ul>
+</div>
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
+
 <p>{{Erro}}</p>
 
-<p class="m-10"><a class="text-green-500" href="/">Home</a>/Login</p>
 <form
-  class="flex gap-5 flex-col bg-sky-500 text-white w-3/5 m-auto min-m-[500px] p-5 roudend-sm"
+  class="flex gap-5 flex-col items-start text-white border rounded-md w-fit m-auto min-m-[500px] p-5"
   action="./login_user_controller.php"
   method="POST"
 >
@@ -12,14 +18,14 @@
   <input
     name="email"
     placeholder="example@example.com"
-    class="p-3 text-black"
+    class="input input-bordered input-accent w-full max-w-xs"
     type="email"
   />
   <label for="">Password</label>
   <input
     name="password"
     placeholder="your password"
-    class="p-3 text-black"
+    class="input input-bordered input-accent w-full max-w-xs"
     type="password"
   />
   <button class="bg-indigo-500 p-3">Login</button>
