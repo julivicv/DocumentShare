@@ -1,63 +1,122 @@
 <?php
 require_once("Model.php");
+session_start();
 class Document extends Model
 {
-    public function getDocumentById($id, $auth)
+    public function searchDocuments($users_id, $search)
     {
-        $sql = $this->conex->prepare("SELECT `d`.`path`, `d`.`description` FROM `documents` `d` LEFT JOIN `shared_documents` `sd` ON `d`.`id` = `sd`.`documents_id` WHERE `d`.`id` = :id AND (`d`.`users_id` = :uid OR `ds`.`users_id` = :uid)");
-        $sql->bindParam(':id', $id);
-        $sql->bindParam(':uid', $auth);
-        $sql->execute();
-        if ($sql->rowCount()) {
-            return $sql->fetch(PDO::FETCH_ASSOC);
+        try {
+            $query = "SELECT *
+            FROM documents AS d
+            LEFT JOIN users AS u ON d.users_id = u.id
+            JOIN document_permissions AS p ON p.documents_id = d.id
+            WHERE (d.users_id = ? OR u.id = ?)
+            AND (d.name LIKE ? OR d.path LIKE ?)";
+
+            $statement = $this->conex->prepare($query);
+            $searchTerm = '%' . $search . '%';
+            $statement->execute([$users_id, $users_id, $searchTerm, $searchTerm]);
+
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
         }
-        return ("Arquivo inválido ou não encontrado");
     }
-    public function getDocumentByUser($userId)
+    public function getDocument($id, $users_id)
     {
-        $sql = $this->conex->prepare("SELECT * FROM documents WHERE users_id = :userId");
-        $sql->bindParam(':userId', $userId);
-        $sql->execute();
-        if ($sql->rowCount()) {
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        $query = "SELECT * FROM documents WHERE id = ? AND users_id = ?";
+        $statement = $this->conex->prepare($query);
+        $statement->execute([$id, $users_id]);
+        $document = $statement->fetch(PDO::FETCH_ASSOC);
+        return $document;
+    }
+    public function getDocumentsByUserId($users_id)
+    {
+        try {
+            $query = "SELECT * FROM documents as d JOIN document_permissions as p ON p.documents_id = d.id  WHERE d.users_id = ?";
+            $statement = $this->conex->prepare($query);
+            $statement->execute([$users_id]);
+            $documents = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $documents;
+        } catch (PDOException $e) {
+            return false;
         }
-        return ("Nenhum arquivo encontrado");
+    }
+    public function deleteDocument($id, $users_id)
+    {
+        try {
+            $query = "SELECT * FROM documents as d JOIN document_permissions as p ON p.documents_id = d.id WHERE d.id = ? and d.users_id = ? and p.can_delete = 1";
+            $statement = $this->conex->prepare($query);
+            $statement->execute([$id, $users_id]);
+            $document = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if (!isset($document)) {
+                return false; // Document not found or user does not have permission
+            }
+
+            $deleteQuery = "DELETE FROM documents WHERE id = ? AND users_id = ?";
+            $deleteStatement = $this->conex->prepare($deleteQuery);
+            $deleteStatement->execute([$id, $users_id]);
+
+            if ($deleteStatement->rowCount() > 0) {
+                $filePath = $document['path'];
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+                return true; // Document deleted successfully
+            } else {
+                echo "oi";
+                die;
+
+                return false; // Failed to delete document
+            }
+        } catch (PDOException $e) {
+
+            return false; // Exception occurred
+        }
     }
 
-    public function createDocument($data, $file)
+    public function createDocument($users_id, $path, $name, $permitions)
     {
-        if (isset($file)) {
-            if ($file['upfile']['size'] > 1000000) {
-                return ('Arquivo muito grande');
-            }
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
-            if (
-                false === $ext = array_search(
-                    $finfo->file($_FILES['upfile']['tmp_name']),
-                    array(
-                        'pdf' => 'document/pdf',
-                        'doc' => 'document/doc',
-                        'docx' => 'document/docx',
-                    ),
-                    true
-                )
-            ) {
-                return ('Arquivo inválido');
-            }
-            if (
-                !move_uploaded_file(
-                    $_FILES['upfile']['tmp_name'],
-                    sprintf(
-                        '../documents/%s.%s',
-                        sha1_file($_FILES['upfile']['tmp_name']),
-                        $ext
-                    )
-                )
-            ) {
-                return ('Falha no upload');
-            }
-            parent::create($data);
-            return ('Arquivo salvo com sucesso');
+
+        try {
+            $this->conex->beginTransaction();
+
+            // Inserir o documento na tabela "documents"
+            $query = "INSERT INTO documents (users_id, path, name) VALUES (?, ?, ?)";
+            $statement = $this->conex->prepare($query);
+            $statement->execute([$users_id, $path, $name]);
+            $documentId = $this->conex->lastInsertId();
+            $permitionsRead = $permitions[0];
+            $permitionsWrite = $permitions[1];
+            $permitionsDelete = $permitions[2];
+
+
+            // Definir as permissões padrão para o usuário que criou o documento
+            $query = "INSERT INTO document_permissions (documents_id, users_id, can_view, can_edit, can_delete) VALUES (?, ?, $permitionsRead, $permitionsWrite, $permitionsDelete)";
+            $statement = $this->conex->prepare($query);
+            $statement->execute([$documentId, $users_id]);
+
+            $this->conex->commit();
+
+            return $documentId;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die;
+            $this->conex->rollBack();
+            return false;
+        }
+    }
+    public function updateDocument($id, $users_id, $path, $name)
+    {
+        try {
+            $query = "UPDATE documents SET path = ?, name = ? WHERE id = ? AND users_id = ?";
+            $statement = $this->conex->prepare($query);
+            $statement->execute([$path, $name, $id, $users_id]);
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
         }
     }
 }

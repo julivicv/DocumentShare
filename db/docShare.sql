@@ -13,15 +13,19 @@ CREATE TABLE IF NOT EXISTS `docShare`.`users` (
 CREATE TABLE IF NOT EXISTS `docShare`.`documents` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `users_id` INT NOT NULL,
-  `path` VARCHAR(20) NOT NULL,
-  `description` VARCHAR(140) NOT NULL,
+  `path` VARCHAR(140) NOT NULL,
+  `name` VARCHAR(140) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`, `users_id`),
   FOREIGN KEY (`users_id`) REFERENCES `docShare`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
-CREATE TABLE IF NOT EXISTS `docShare`.`shared_documents` (
-  `users_id` INT NOT NULL,
-  `documents_id` INT NOT NULL,
-  PRIMARY KEY (`users_id`, `documents_id`),
-  FOREIGN KEY (`users_id`) REFERENCES `docShare`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  FOREIGN KEY (`documents_id`) REFERENCES `docShare`.`documents` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+CREATE TABLE document_permissions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  documents_id INT,
+  users_id INT,
+  can_view TINYINT(1),
+  can_edit TINYINT(1),
+  can_delete TINYINT(1),
+  FOREIGN KEY (documents_id) REFERENCES documents(id),
+  FOREIGN KEY (users_id) REFERENCES users(id)
+);

@@ -1,4 +1,5 @@
 <?php
+
 require('../utils/load_twig.php');
 require('../utils/erros.php');
 require('../model/Document.php');
@@ -6,6 +7,7 @@ require('../model/Document.php');
 session_start();
 
 $view = $twig->load('view_file.html');
+
 
 if (!isset($_SESSION['auth'])) {
     header("Location: create_user_controller.php");
@@ -15,5 +17,17 @@ if (!isset($_SESSION['auth'])) {
 $docs = new Document();
 $userId = $_SESSION["auth"];
 
-$listDocs = $docs->getDocumentByUser($userId);
-echo $view->render(['title' => 'List FILES', 'files' => $listDocs]);
+$documents = $docs->getDocumentsByUserId($userId);
+
+$search = isset($_POST['search']) ? $_POST['search'] : '';
+
+$documents = $docs->searchDocuments($userId, $search);
+
+
+
+if (!isset($documents[0])) {
+    $documents = "Nenhum arquivo encontrado";
+}
+
+
+echo $view->render(['title' => 'List FILES', 'files' => $documents]);
