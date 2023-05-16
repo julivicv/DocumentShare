@@ -6,7 +6,7 @@ class Document extends Model
     public function searchDocuments($users_id, $search)
     {
         try {
-            $query = "SELECT *
+            $query = "SELECT d.id, d.users_id, d.path, d.name, p.can_view, p.can_edit, p.can_delete
             FROM documents AS d
             LEFT JOIN users AS u ON d.users_id = u.id
             JOIN document_permissions AS p ON p.documents_id = d.id
@@ -55,25 +55,28 @@ class Document extends Model
                 return false; // Document not found or user does not have permission
             }
 
-            $deleteQuery = "DELETE FROM documents WHERE id = ? AND users_id = ?";
+            $deleteQuery = "DELETE FROM documents WHERE id = ?";
+
             $deleteStatement = $this->conex->prepare($deleteQuery);
-            $deleteStatement->execute([$id, $users_id]);
+            $deleteStatement->execute([$id]);
 
             if ($deleteStatement->rowCount() > 0) {
                 $filePath = $document['path'];
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }
-                return true; // Document deleted successfully
-            } else {
-                echo "oi";
-                die;
 
-                return false; // Failed to delete document
+
+                return true;
+            } else {
+                return false;
             }
         } catch (PDOException $e) {
+            echo $e;
+            die;
 
-            return false; // Exception occurred
+
+            return false;
         }
     }
 

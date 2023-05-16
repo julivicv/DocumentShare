@@ -4,8 +4,6 @@ require('../utils/load_twig.php');
 require('../utils/erros.php');
 require('../model/Document.php');
 
-session_start();
-
 $view = $twig->load('view_file.html');
 
 

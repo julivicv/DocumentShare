@@ -29,3 +29,5 @@ CREATE TABLE document_permissions (
   FOREIGN KEY (documents_id) REFERENCES documents(id),
   FOREIGN KEY (users_id) REFERENCES users(id)
 );
+ALTER TABLE document_permissions
+ADD CONSTRAINT document_permissions_fk_documents FOREIGN KEY (documents_id) REFERENCES documents(id) ON DELETE CASCADE;
