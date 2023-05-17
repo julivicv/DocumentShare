@@ -1,18 +1,20 @@
 {% include "components/head.html" %}
-<a href="./logout.php" class="btn m-1">Logout</a>
+<a href="./logout" class="btn m-1">Logout</a>
 
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
-{% if error == true %}
+
+{% if Erro == true %}
 <div class="toast toast-and toast-top">
-  <div class="alert alert-erro">
-    <div>
-      <span>{{error}}</span>
-    </div>
+<div class="alert alert-erro">
+  <div>
+    <span>{{Erro}}</span>
   </div>
 </div>
+</div>
 {% endif %}
+
 <div class="btm-nav">
-  <a href="./view_file_page.php">
+  <a href="./view-files">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5"
@@ -29,7 +31,7 @@
     </svg>
     <span class="btm-nav-label">View your files</span>
   </a>
-  <a href="./home_page.php">
+  <a href="./home">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5"
@@ -46,7 +48,7 @@
     </svg>
     <span class="btm-nav-label">Home</span>
   </a>
-  <a href="./submit_file_page.php" class="active">
+  <a href="./submit-file" class="active">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5"
@@ -66,7 +68,7 @@
 </div>
 
 <form
-  action="../controller/send_file_controller.php"
+  action="/upload-file"
   method="POST"
   enctype="multipart/form-data"
   class="flex flex-col p-4 w-[400px] m-auto gap-2"
@@ -92,16 +94,6 @@
       </label>
     </div>
   </div>
-
-  <div class="">
-    <div class="form-control">
-      <label class="label cursor-pointer">
-        <span class="label-text">Alter Permission</span>
-        <input type="checkbox" name="write" id="delete" class="checkbox" />
-      </label>
-    </div>
-  </div>
-
   <br />
   <button
     class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"

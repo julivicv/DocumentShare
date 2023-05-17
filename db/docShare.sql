@@ -24,7 +24,6 @@ CREATE TABLE document_permissions (
   documents_id INT,
   users_id INT,
   can_view TINYINT(1),
-  can_edit TINYINT(1),
   can_delete TINYINT(1),
   FOREIGN KEY (documents_id) REFERENCES documents(id),
   FOREIGN KEY (users_id) REFERENCES users(id)

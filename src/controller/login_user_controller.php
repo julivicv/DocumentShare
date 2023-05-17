@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-require("../model/User.php");
+require("./model/User.php");
 
 if (isset($_SESSION["auth"])) {
-    header("location: ./home_page.php");
+    header("location: /home");
 }
 
 $email = $_POST['email'];
@@ -14,9 +14,9 @@ $user = new User();
 
 $userExist = $user->getUserByEmail($email);
 if ($userExist) {
-    header("location: ./login_user_page.php?erro=8");
+    header("location: /login?erro=8");
 };
 
 $user->login($email, $password);
 
-header("location: ./home_page.php");
+header("location: /home");

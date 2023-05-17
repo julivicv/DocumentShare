@@ -1,14 +1,14 @@
 <?php
-require('../utils/load_twig.php');
-require('../utils/erros.php');
+require('./utils/load_twig.php');
+require('./utils/erros.php');
 
 $view = $twig->load('login_user.html');
 
-$errorValue = (int) isset($_GET["erro"]);
-$errorMsg = $error[$errorValue] ?? "";
+$errorMsg = "";
 
-if (!isset($errorMsg)) {
-    $errorMsg = "";
+if ($hasErrors) {
+  $errorId = explode("=", $hasErrors)[1];
+  $errorMsg = $error[$errorId] ?? "";
 }
 
 echo $view->render(['title' => 'Login', 'Erro' => $errorMsg]);

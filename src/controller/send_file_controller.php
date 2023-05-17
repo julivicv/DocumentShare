@@ -1,25 +1,24 @@
 <?php
-require("../model/User.php");
-require("../model/Document.php");
+require("./model/User.php");
+require("./model/Document.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
-  $write = $_POST['write'] ? 1 : 0;
-  $delete = $_POST['delete'] ? 1 : 0;
+  $email = isset($_POST['email']) ? $_POST['email'] : null;
+  $delete = isset($_POST['delete']) ? 1 : 0;
 
   $user = new User();
   $dataUser = $user->getUserByEmail($email);
-  if (!$dataUser) {
-    header("Location: ../controller/submit_file_page.php?error=10");
+  if ($dataUser < 0) {
+    header("Location: /submit-file?erro=10");
     exit;
   }
 
   if (empty($_FILES['arquivo']['name'])) {
-    header("Location: ../controller/submit_file_page.php?error=9");
+    header("Location: /submit-file?erro=9");
     exit;
   };
 
-  $targetDir = "../docs/";
+  $targetDir = "./docs/";
   $allowedExtensions = ['pdf'];
 
   if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
@@ -33,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dataUser = $user->getUserByEmail($email);
 
 
-    $permissions = [1, $write, $delete];
+    $permissions = [1, $delete];
 
     $documentId = $document->createDocument($dataUser['id'], $targetPath, $fileName, $permissions);
 
@@ -53,5 +52,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     echo "Nenhum arquivo foi enviado.";
   }
-  header("Location: ../controller/view_file_page.php");
+  header("Location: /view-files");
 }

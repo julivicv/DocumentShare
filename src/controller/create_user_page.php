@@ -1,12 +1,15 @@
 <?php
-require('../utils/load_twig.php');
-require('../utils/erros.php');
+require('./utils/load_twig.php');
+require('./utils/erros.php');
 
 $view = $twig->load('create_user.html');
 
-$errorValue = (int) isset($_GET["erro"]);
+$errorMsg = "";
+
+if ($hasErrors) {
+  $errorId = explode("=", $hasErrors)[1];
+  $errorMsg = $error[$errorId] ?? "";
+}
 
 
-$errorMsg = $error[$errorValue] ?? "";
-
-echo $view->render(['title' => 'Cadastro De Usuario', 'Erro' => $error[$errorValue] ?? ""]);
+echo $view->render(['title' => 'Cadastro De Usuario', 'Erro' => $errorMsg ?? ""]);

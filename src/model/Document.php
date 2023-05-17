@@ -80,7 +80,7 @@ class Document extends Model
         }
     }
 
-    public function createDocument($users_id, $path, $name, $permitions)
+    public function createDocument($users_id, $path, $name, $permissions)
     {
 
         try {
@@ -91,13 +91,12 @@ class Document extends Model
             $statement = $this->conex->prepare($query);
             $statement->execute([$users_id, $path, $name]);
             $documentId = $this->conex->lastInsertId();
-            $permitionsRead = $permitions[0];
-            $permitionsWrite = $permitions[1];
-            $permitionsDelete = $permitions[2];
+            $permissionsRead = $permissions[0];
+            $permissionsDelete = $permissions[1];
 
 
             // Definir as permissões padrão para o usuário que criou o documento
-            $query = "INSERT INTO document_permissions (documents_id, users_id, can_view, can_edit, can_delete) VALUES (?, ?, $permitionsRead, $permitionsWrite, $permitionsDelete)";
+            $query = "INSERT INTO document_permissions (documents_id, users_id, can_view, can_delete) VALUES (?, ?, $permissionsRead, $permissionsDelete)";
             $statement = $this->conex->prepare($query);
             $statement->execute([$documentId, $users_id]);
 

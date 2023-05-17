@@ -6,7 +6,7 @@ $error = [
     "3" => "O seu nome só pode conter letras, números e espaços.",
     "4" => "Por favor, digite a sua senha.",
     "5" => "A sua senha deve ter pelo menos 8 caracteres.",
-    "8" => "Esse email esta em uso.",
+    "8" => "Email em uso.",
     "9" => "Arquivo invalido.",
-    "10" => "Invalid Email"
+    "10" => "Email inválido"
 ];

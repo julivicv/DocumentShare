@@ -1,17 +1,25 @@
 {% include "components/head.html" %}
 <div class="text-sm breadcrumbs m-10">
   <ul>
-    <li><a href="./create_user_page.php">Cadastro</a></li>
+    <li><a href="/register">Cadastro</a></li>
     <li><a>Login</a></li>
   </ul>
 </div>
 <h1 class="text-2xl text-center m-10 font-bold">{{ title }}</h1>
 
-<p>{{Erro}}</p>
+{% if Erro == true %}
+<div class="toast toast-and toast-top">
+<div class="alert alert-erro">
+  <div>
+    <span>{{Erro}}</span>
+  </div>
+</div>
+</div>
+{% endif %}
 
 <form
   class="flex gap-5 flex-col items-start text-white border rounded-md w-fit m-auto min-m-[500px] p-5"
-  action="./login_user_controller.php"
+  action="/login-user"
   method="POST"
 >
   <label for="">Email</label>

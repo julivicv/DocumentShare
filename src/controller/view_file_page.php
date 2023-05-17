@@ -1,14 +1,14 @@
 <?php
 
-require('../utils/load_twig.php');
-require('../utils/erros.php');
-require('../model/Document.php');
+require('./utils/load_twig.php');
+require('./utils/erros.php');
+require('./model/Document.php');
 
 $view = $twig->load('view_file.html');
 
 
 if (!isset($_SESSION['auth'])) {
-    header("Location: create_user_controller.php");
+    header("Location: create-user");
     exit;
 }
 

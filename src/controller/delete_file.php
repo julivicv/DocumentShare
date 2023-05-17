@@ -1,5 +1,5 @@
 <?php
-require_once("../model/Document.php");
+require_once("./model/Document.php");
 
 $document = new Document();
 
@@ -10,4 +10,4 @@ $users_id = $_SESSION['auth'];
 $document->deleteDocument($id, $users_id);
 
 
-header("Location: ./view_file_page.php");
+header("Location: /view-files");
