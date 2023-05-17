@@ -6,12 +6,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
   $write = $_POST['write'] ? 1 : 0;
   $delete = $_POST['delete'] ? 1 : 0;
+
   $user = new User();
   $dataUser = $user->getUserByEmail($email);
   if (!$dataUser) {
     header("Location: ../controller/submit_file_page.php?error=10");
     exit;
   }
+
+  if (empty($_FILES['arquivo']['name'])) {
+    header("Location: ../controller/submit_file_page.php?error=9");
+    exit;
+  };
 
   $targetDir = "../docs/";
   $allowedExtensions = ['pdf'];
