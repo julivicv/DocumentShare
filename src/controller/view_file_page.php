@@ -6,9 +6,8 @@ require('./model/Document.php');
 
 $view = $twig->load('view_file.html');
 
-
 if (!isset($_SESSION['auth'])) {
-    header("Location: create-user");
+  header("Location: /login");
     exit;
 }
 
@@ -17,11 +16,7 @@ $userId = $_SESSION["auth"];
 
 $documents = $docs->getDocumentsByUserId($userId);
 
-$search = isset($_POST['search']) ? $_POST['search'] : '';
-
-$documents = $docs->searchDocuments($userId, $search);
-
-
+$search = isset($_POST['search']) ? $documents = $docs->searchDocuments($userId, $_POST['search']) : null;
 
 if (!isset($documents[0])) {
     $documents = "Nenhum arquivo encontrado";

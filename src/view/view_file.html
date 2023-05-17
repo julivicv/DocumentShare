@@ -57,7 +57,7 @@
   </a>
 </div>
 
-<form class="flex" action="./view_file_page.php" method="post">
+<form class="flex" action="./view-files" method="post">
     <div class="form-control m-auto my-10">
       <div class="input-group">
 
@@ -95,11 +95,17 @@
           <td class="py-2">
             {% if file['can_delete'] == 1 %}
             <a
-              class="bg-red-400 text-white px-2 py-1 rounded"
+              class="bg-red-400 text-white h-[30px] px-2 py-1 rounded"
               href="./delete-file?id={{ file['id'] }}"
             >
               Delete
             </a>
+            {% else %}
+            <div
+            class="bg-zinc-600 text-white h-[30px] px-2 py-1 rounded flex"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="m-auto" width="15" height="15" fill="#000000" viewBox="0 0 256 256"><path d="M128,20A108,108,0,1,0,236,128,108.12,108.12,0,0,0,128,20Zm84,108a83.6,83.6,0,0,1-16.75,50.28L77.72,60.75A84,84,0,0,1,212,128ZM44,128A83.6,83.6,0,0,1,60.75,77.72L178.28,195.25A84,84,0,0,1,44,128Z"></path></svg>
+            </div>
             {% endif %}
           </td>
         </tr>

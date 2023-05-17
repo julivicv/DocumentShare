@@ -6,7 +6,7 @@ session_start();
 $view = $twig->load('home.html');
 
 if (!isset($_SESSION['auth'])) {
-    header("Location: /create-user");
+    header("Location: /login");
 }
 
 echo $view->render(['title' => 'Home']);

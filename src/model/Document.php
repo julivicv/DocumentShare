@@ -6,7 +6,7 @@ class Document extends Model
     public function searchDocuments($users_id, $search)
     {
         try {
-            $query = "SELECT d.id, d.users_id, d.path, d.name, p.can_view, p.can_edit, p.can_delete, d.created_at
+            $query = "SELECT d.id, d.users_id, d.path, d.name, p.can_view, p.can_delete, d.created_at
             FROM documents AS d
             LEFT JOIN users AS u ON d.users_id = u.id
             JOIN document_permissions AS p ON p.documents_id = d.id
@@ -23,13 +23,16 @@ class Document extends Model
             return [];
         }
     }
-    public function getDocument($id, $users_id)
+    public function getDocument($path, $users_id)
     {
-        $query = "SELECT * FROM documents WHERE id = ? AND users_id = ?";
+        $query = "SELECT * FROM documents WHERE path = ? AND users_id = ?";
         $statement = $this->conex->prepare($query);
-        $statement->execute([$id, $users_id]);
+        $statement->execute([$path, $users_id]);
         $document = $statement->fetch(PDO::FETCH_ASSOC);
+        if($statement->rowCount() > 0) {
         return $document;
+        }
+        return false;
     }
     public function getDocumentsByUserId($users_id)
     {
@@ -107,17 +110,6 @@ class Document extends Model
             echo $e->getMessage();
             die;
             $this->conex->rollBack();
-            return false;
-        }
-    }
-    public function updateDocument($id, $users_id, $path, $name)
-    {
-        try {
-            $query = "UPDATE documents SET path = ?, name = ? WHERE id = ? AND users_id = ?";
-            $statement = $this->conex->prepare($query);
-            $statement->execute([$path, $name, $id, $users_id]);
-            return $statement->rowCount() > 0;
-        } catch (PDOException $e) {
             return false;
         }
     }
