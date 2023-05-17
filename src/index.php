@@ -6,6 +6,8 @@ $req = explode("?", $request);
 
 $hasErrors = null;
 
+$docs[0] == "docs" ? $hasDocument = true : '';
+
 isset($req[1]) ? (explode("=", $req[1])[0] == "erro" ? $hasErrors = $req[1] : "") : "";
 
 switch ($req[0]) {
@@ -52,12 +54,8 @@ switch ($req[0]) {
 		require __DIR__ . '/controller/send_file_controller.php';
 		break;
 
-	case '/':
-		require __DIR__ . '/controller/.php';
-		break;
-
-	case '/':
-		require __DIR__ . '/controller/.php';
+	case '/delete-file':
+		require __DIR__ . '/controller/delete_file.php';
 		break;
 
 	default:
